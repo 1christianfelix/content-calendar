@@ -14,14 +14,14 @@ import jakarta.annotation.PostConstruct;
 
 @Repository
 public class ContentCollectionRepository {
-	private final List<Content> content = new ArrayList<>();
+	private final List<Content> contentList = new ArrayList<>();
 
 	public ContentCollectionRepository() {
 
 	}
 
 	public List<Content> findAll() {
-		return content;
+		return contentList;
 	}
 
 	/*
@@ -39,9 +39,20 @@ public class ContentCollectionRepository {
 	 */
 
 	public Optional<Content> findById(Integer id) {
-		return content.stream().filter(c -> c.id().equals(id)).findFirst();
+		return contentList.stream().filter(c -> c.id().equals(id)).findFirst();
 	}
 
+	
+	/*
+	 * PostConstruct methods are called right after all beans have been created
+	 * and their dependencies have been injected.
+	 */
+	
+	
+	public void save(Content content) {
+		contentList.add(content);
+	}
+	
 	@PostConstruct
 	private void init() {
 		Content newContent = new Content(
@@ -54,6 +65,6 @@ public class ContentCollectionRepository {
 				null,
 				"");
 		
-		content.add(newContent);
+		contentList.add(newContent);
 	}
 }
